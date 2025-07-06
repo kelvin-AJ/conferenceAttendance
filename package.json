@@ -1,0 +1,20 @@
+{
+  "name": "conference_attend_back",
+  "version": "1.0.0",
+  "description": "Backend for conference attendance app",
+  "license": "ISC",
+  "author": "Olamilekan Ajibola",
+  "type": "commonjs",
+  "main": ".",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.0.1",
+    "express": "^5.1.0",
+    "mongodb": "^6.17.0",
+    "nodemon": "^3.1.10"
+  }
+}
