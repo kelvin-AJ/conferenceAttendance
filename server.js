@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const {initializeDb} = require("./database/connect");
 const router = require("./routes");
+const cors = require("cors")
 
 
 const PORT = process.env.PORT
@@ -10,6 +11,7 @@ const PORT = process.env.PORT
 
 
 app.use(express.json())
+    .use(cors())
     .use("/", router);
 
 initializeDb((error) => {
