@@ -1,6 +1,8 @@
 const {getDb} = require("./database/connect");
 const {ObjectId} = require("mongodb");
 
+let lastId = "IkejaStakeConference0010-tes";
+
 const getAttendees = async function(req, res) {
     try{
         const collection = getDb().db().collection("attendees");
@@ -27,29 +29,51 @@ const getAttendance = async function(req, res) {
 }
 
 const addAttendance = async function (req, res) {
+    
+    
     try{
         const attendeesCollection = getDb().db().collection("attendees");
 
-        // Add Chirper
+
+        
+        if(!req.body.attendeeId.startsWith("IkejaStakeConference")){
+            res.status(406).json("Not Stake Conference QR");
+            return;
+        }
+
+
+
         const attendee = {
             fullName: req.body.fullName,
             scanTime: Date.now(),
             attendeeId: req.body.attendeeId
         }
+
+
+        if(attendee.attendeeId == lastId ){
+            res.status(409).json("This person is already marked present");
+            return;
+        }
+
+        lastId = attendee.attendeeId;
+
         
+
         
         if(await isPresent(req.body.attendeeId)){
             res.status(409).json("This person is already marked present");
         }else{
+
             const response = attendeesCollection.insertOne(attendee);
             res.status(201).json(response);
+            console.log(response)   
 
             updateAttendance();
         }
         
 
     }catch (err) {
-        res.status(500).json("Sorry, I couldn't post that")
+        res.status(500).json(err || "Sorry, I couldn't post that")
     }
 }
 
